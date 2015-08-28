@@ -10,11 +10,19 @@ WriteMakefile(
 
 sub MY::postamble {
     return <<'MAKE_FRAG';
+
+# This isn't covered by H_FILES, because H_FILES is a list
+# of present .h files at perl Makefile.PL time, and this
+# won't be there yet
+$(C_FILES): libadd.h
+
 libadd.h: add.go $(INST_ARCHAUTODIR)/libadd.so
+	touch libadd.h
+
+$(INST_ARCHAUTODIR)/libadd.so: add.go
 	# This has to be built locally because it does generate libadd.h
 	go build -buildmode=c-shared -o libadd.so add.go
 	mv libadd.so $(INST_ARCHAUTODIR)/libadd.so
-	touch libadd.h
 
 MAKE_FRAG
 }
