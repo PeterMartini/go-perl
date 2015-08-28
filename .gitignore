@@ -1,4 +1,5 @@
 Makefile
+Makefile.old
 # gotest.xs artifacts
 gotest.c
 gotest.h
