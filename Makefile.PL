@@ -6,14 +6,15 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
   NAME   => 'gotest',
   VERSION_FROM => 'gotest.pm',
-  MYEXTLIB => '$(INST_ARCHAUTODIR)/libadd.so',
 );
 
 sub MY::postamble {
     return <<'MAKE_FRAG';
-$(INST_ARCHAUTODIR)/libadd.so: add.go
+libadd.h: add.go $(INST_ARCHAUTODIR)/libadd.so
+	# This has to be built locally because it does generate libadd.h
 	go build -buildmode=c-shared -o libadd.so add.go
-	mv libadd.so $(INST_ARCHAUTODIR)
+	mv libadd.so $(INST_ARCHAUTODIR)/libadd.so
+	touch libadd.h
 
 MAKE_FRAG
 }
