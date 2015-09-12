@@ -10,3 +10,8 @@ int
 add(int a, int b)
     OUTPUT:
         RETVAL
+
+int
+sub(int a, int b)
+    OUTPUT:
+        RETVAL

@@ -9,6 +9,8 @@ blib/
 # go artifacts
 libadd.h
 libadd.so
+libsub.h
+libsub.so
 # Makefile.PL artifacts
 MYMETA.*
 pm_to_blib

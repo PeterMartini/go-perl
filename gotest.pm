@@ -12,14 +12,17 @@ our $VERSION = '0.01';
   use DynaLoader;
   my (undef, $dir) = fileparse(__FILE__);
   my @reldirs = qw(../arch/auto auto);
-  my $lib;
-  for my $reldir (@reldirs) {
-    my $libpath = "$dir/" . $reldir . "/" . __PACKAGE__ . "/libadd.so";
-    # The '1' is necessary to make the symbols visible to the upcoming load
-    $lib = DynaLoader::dl_load_file($libpath, 1);
-    last if $lib;
+  my @libs = qw(libadd.so libsub.so);
+  for my $libname (@libs) {
+    my $lib;
+    for my $reldir (@reldirs) {
+      my $libpath = "$dir/" . $reldir . "/" . __PACKAGE__ . "/$libname";
+      # The '1' is necessary to make the symbols visible to the upcoming load
+      $lib = DynaLoader::dl_load_file($libpath, 1);
+      last if $lib;
+    }
+    die "Couldn't load generated Go library $libname" unless defined $lib;
   }
-  die "Couldn't load generated Go library" unless defined $lib;
 }
 
 use XSLoader;
